@@ -1,0 +1,40 @@
+[{
+        "type": "click",
+        "selector": "a.btn.up"
+    },
+    {
+        "type": "click",
+        "selector": "a.user-choose-login-inner-client-button"
+    },
+    {
+        "type": "write",
+        "selector": "input[type=email]",
+        "text": "a@a.com"
+    },
+    {
+        "type": "write",
+        "selector": "input[type=password]",
+        "text": "a"
+    },
+    {
+        "type": "click",
+        "selector": ".user-outer-login-submit"
+    },
+    {
+        "type": "click",
+        "selector": "a.action-buttons"
+    },
+    {
+        "type": "click",
+        "selector": "a.action-buttons"
+    },
+    {
+        "type": "write",
+        "selector": ".setting-screen-modal-container input",
+        "text": "User From Bot"
+    },
+    {
+        "type": "click",
+        "selector": "#modal_account_management_save_button"
+    }
+]
