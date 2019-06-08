@@ -71,19 +71,43 @@ export async function executeCommand(data, page: puppteer.Page) {
             break;
         case 'route':
             await routeCommand(data, page);
+            break;
+        case 'screenshot':
+            await screenshot(data, page);
+            break;
     }
     const waitFor = data.waitFor ? data.waitFor : 1500;
     await wait(waitFor);
 }
 
 async function clickCommand(data, page: puppteer.Page) {
-    const el = await page.waitFor(data.selector as string, { timeout: 50000 });
-    await el.click();
+    try {
+        const el = await page.waitFor(data.selector as string, { timeout: 50000 });
+        await el.click();
+    }
+    catch (error) {
+        console.error('error on the following command: ', data, error);
+    }
 }
 async function writeCommand(data, page: puppteer.Page) {
-    const el = await page.waitFor(data.selector as string, { timeout: 50000 });
-    await el.type(data.text);
+    try {
+        const el = await page.waitFor(data.selector as string, { timeout: 50000 });
+        await el.type(data.text);
+    } catch (error) {
+        console.error('error on the following command: ', data, error);
+    }
 }
 async function routeCommand(data, page: puppteer.Page) {
-    await page.goto(data.route);
+    try {
+        await page.goto(data.route);
+    } catch (error) {
+        console.error('error on the following command: ', data, error);
+    }
+}
+async function screenshot(data, page: puppteer.Page) {
+    try {
+        await page.screenshot({ path: data.path });
+    } catch (error) {
+        console.error('error on the following command: ', data, error);
+    }
 }
