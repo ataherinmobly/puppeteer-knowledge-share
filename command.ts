@@ -1,4 +1,5 @@
 import * as puppteer from 'puppeteer';
+import * as faker from 'faker';
 interface ICommand {
     selector: string,
     execute(): Promise<any>,
@@ -82,7 +83,8 @@ export async function executeCommand(data, page: puppteer.Page) {
 
 async function clickCommand(data, page: puppteer.Page) {
     try {
-        const el = await page.waitFor(data.selector as string, { timeout: 50000 });
+        const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
+            await page.waitFor(data.selector as string, { timeout: 50000 });
         await el.click();
     }
     catch (error) {
@@ -91,7 +93,11 @@ async function clickCommand(data, page: puppteer.Page) {
 }
 async function writeCommand(data, page: puppteer.Page) {
     try {
-        const el = await page.waitFor(data.selector as string, { timeout: 50000 });
+        if (data.isFake === true) {
+            data.text = faker[data.faker.object][data.faker.function]();
+        }
+        const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
+            await page.waitFor(data.selector as string, { timeout: 50000 });
         await el.type(data.text);
     } catch (error) {
         console.error('error on the following command: ', data, error);
@@ -99,7 +105,7 @@ async function writeCommand(data, page: puppteer.Page) {
 }
 async function routeCommand(data, page: puppteer.Page) {
     try {
-        await page.goto(data.route);
+        await page.goto(data.url, { timeout: 50000 });
     } catch (error) {
         console.error('error on the following command: ', data, error);
     }
@@ -109,5 +115,15 @@ async function screenshot(data, page: puppteer.Page) {
         await page.screenshot({ path: data.path });
     } catch (error) {
         console.error('error on the following command: ', data, error);
+    }
+}
+async function queryElement(queryParams, selector, page: puppteer.Page) {
+    const { queryValue, propertyName, queryMethod } = queryParams;
+    const elms = await page.$$(selector);
+    for (let i = 0; i < elms.length; i++) {
+        const json = await (await elms[i].getProperty(propertyName)).jsonValue();
+        if (json.includes(queryValue)) {
+            return elms[i];
+        }
     }
 }
