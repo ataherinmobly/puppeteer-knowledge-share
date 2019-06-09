@@ -1,0 +1,74 @@
+[{
+        "type": "route",
+        "url": "http://demo.bolt-play.com/aptn/",
+        "waitFor": "5000"
+    },
+    {
+        "type": "click",
+        "toFind": true,
+        "queryParams": {
+            "propertyName": "textContent",
+            "queryValue": "SIGN UP",
+            "queryMethod": "includes"
+        },
+        "selector": "button"
+    },
+    {
+        "type": "write",
+        "isFake": true,
+        "faker": {
+            "object": "name",
+            "function": "firstName"
+        },
+        "selector": "#firstname",
+        "text": ""
+    },
+    {
+        "type": "write",
+        "isFake": true,
+        "faker": {
+            "object": "name",
+            "function": "lastName"
+        },
+        "selector": "#lastname",
+        "text": ""
+    },
+    {
+        "type": "write",
+        "isFake": true,
+        "faker": {
+            "object": "internet",
+            "function": "email"
+        },
+        "selector": "#email",
+        "text": ""
+    },
+    {
+        "type": "write",
+        "isFake": true,
+        "faker": {
+            "object": "internet",
+            "function": "password"
+        },
+        "selector": "#pass",
+        "text": ""
+    },
+    {
+        "type": "click",
+        "selector": ".season-select-button"
+    },
+    {
+        "type": "click",
+        "toFind": true,
+        "queryParams": {
+            "propertyName": "textContent",
+            "queryValue": "Alberta",
+            "queryMethod": "includes"
+        },
+        "selector": ".province-select a"
+    },
+    {
+        "type": "click",
+        "selector": ".user-register-form-button"
+    }
+]

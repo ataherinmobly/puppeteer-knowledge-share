@@ -1,4 +1,9 @@
 [{
+        "type": "route",
+        "url": "https://www.tdmascr.com/",
+        "waitFor": "5000"
+    },
+    {
         "type": "click",
         "selector": "a.btn.up"
     },
