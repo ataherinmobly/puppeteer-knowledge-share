@@ -55,67 +55,61 @@ export class Command {
 function wait(ms) {
     return new Promise((res, rej) => {
         setTimeout(() => {
-            console.log('hola');
             res();
         }, ms);
     })
 }
 
-export async function executeCommand(data, page: puppteer.Page) {
+export function executeCommand(data, page: puppteer.Page) {
+    return new Promise(async (res, rej) => {
+        try {
+            switch (data.type) {
+                case 'click':
+                    await clickCommand(data, page);
+                    break;
+                case 'write':
+                    await writeCommand(data, page);
+                    break;
+                case 'route':
+                    await routeCommand(data, page);
+                    break;
+                case 'screenshot':
+                    await screenshot(data, page);
+                    break;
+            }
+        } catch (error) {
+            res({
+                error: error,
+                command: data
+            });
+        }
+        const waitFor = data.waitFor ? data.waitFor : 1500;
+        await wait(waitFor);
+        res({
+            error: false
+        });
+    })
 
-    switch (data.type) {
-        case 'click':
-            await clickCommand(data, page);
-            break;
-        case 'write':
-            await writeCommand(data, page);
-            break;
-        case 'route':
-            await routeCommand(data, page);
-            break;
-        case 'screenshot':
-            await screenshot(data, page);
-            break;
-    }
-    const waitFor = data.waitFor ? data.waitFor : 1500;
-    await wait(waitFor);
 }
 
 async function clickCommand(data, page: puppteer.Page) {
-    try {
-        const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
-            await page.waitFor(data.selector as string, { timeout: 50000 });
-        await el.click();
-    }
-    catch (error) {
-        console.error('error on the following command: ', data, error);
-    }
+            const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
+                await page.waitFor(data.selector as string);
+            await el.click();
 }
 async function writeCommand(data, page: puppteer.Page) {
-    try {
-        if (data.isFake === true) {
-            data.text = faker[data.faker.object][data.faker.function]();
-        }
-        const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
-            await page.waitFor(data.selector as string, { timeout: 50000 });
-        await el.type(data.text);
-    } catch (error) {
-        console.error('error on the following command: ', data, error);
+    if (data.isFake === true) {
+        data.text = faker[data.faker.object][data.faker.function]();
     }
+    const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
+        await page.waitFor(data.selector as string, { timeout: 50000 });
+    await el.type(data.text);
 }
 async function routeCommand(data, page: puppteer.Page) {
-    try {
-        await page.goto(data.url, { timeout: 50000 });
-    } catch (error) {
-        console.error('error on the following command: ', data, error);
-    }
+    await page.goto(data.url, { timeout: 50000 });
 }
 async function screenshot(data, page: puppteer.Page) {
-    try {
-        await page.screenshot({ path: data.path });
-    } catch (error) {
-        console.error('error on the following command: ', data, error);
-    }
+    await page.screenshot({ path: data.path });
 }
 async function queryElement(queryParams, selector, page: puppteer.Page) {
     const { queryValue, propertyName, queryMethod } = queryParams;
