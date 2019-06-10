@@ -1,0 +1,60 @@
+[{
+    "queryParams": {},
+    "faker": {},
+    "type": "route",
+    "url": "http://demo.bolt-play.com/aptn/",
+    "waitFor": 5000
+}, {
+    "queryParams": {
+        "propertyName": "textContent",
+        "queryMethod": "includes",
+        "queryValue": "SIGN UP"
+    },
+    "faker": {},
+    "type": "click",
+    "toFind": true,
+    "selector": "button"
+}, {
+    "queryParams": {},
+    "faker": {
+        "object": "name",
+        "function": "firstName"
+    },
+    "type": "write",
+    "isFake": true,
+    "selector": "#firstname"
+}, {
+    "queryParams": {},
+    "faker": {
+        "object": "name",
+        "function": "lastName"
+    },
+    "type": "write",
+    "selector": "#lastname",
+    "isFake": true
+}, {
+    "queryParams": {},
+    "faker": {
+        "object": "internet",
+        "function": "email"
+    },
+    "type": "write",
+    "selector": "#email",
+    "isFake": true
+}, {
+    "queryParams": {},
+    "faker": {
+        "object": "internet",
+        "function": "password"
+    },
+    "type": "write",
+    "selector": "#pass",
+    "toFind": null,
+    "isFake": true
+}, {
+    "queryParams": {},
+    "faker": {},
+    "type": "screenshot",
+    "path": "regi-angular.png",
+    "waitFor": 2000
+}]

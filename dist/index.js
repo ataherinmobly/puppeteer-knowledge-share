@@ -37,11 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 exports.__esModule = true;
 var puppeteer = require("puppeteer");
-var command_1 = require("./command");
-var fs = require("fs");
-var commandsArray = JSON.parse(fs.readFileSync('./commands.json'));
+var testFactory_1 = require("./testFactory");
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var browser, page, i;
+    var browser, page, testFactory;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, puppeteer.launch({ headless: false })];
@@ -50,27 +48,10 @@ var commandsArray = JSON.parse(fs.readFileSync('./commands.json'));
                 return [4 /*yield*/, browser.newPage()];
             case 2:
                 page = _a.sent();
-                return [4 /*yield*/, page.goto('https://www.tdmascr.com/', { timeout: 60000 })];
-            case 3:
-                _a.sent();
-                return [4 /*yield*/, page.waitFor(5000)];
-            case 4:
-                _a.sent();
-                i = 0;
-                _a.label = 5;
-            case 5:
-                if (!(i < commandsArray.length)) return [3 /*break*/, 8];
-                console.log('executing command: ', commandsArray[i]);
-                return [4 /*yield*/, command_1.executeCommand(commandsArray[i], page)];
-            case 6:
-                _a.sent();
-                console.log('done executing a command');
-                _a.label = 7;
-            case 7:
-                i++;
-                return [3 /*break*/, 5];
-            case 8:
-                console.log('execution completed');
+                testFactory = new testFactory_1.TestFactory(page);
+                testFactory.appendTest('useraddition', './testFiles/user-addition.test.json');
+                testFactory.appendTest('registeration', './testFiles/register.test.json');
+                testFactory.executeTest('registeration', 'registeration.txt');
                 return [2 /*return*/];
         }
     });

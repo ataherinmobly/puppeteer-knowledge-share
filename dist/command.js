@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var faker = require("faker");
 var FindAndClick = /** @class */ (function () {
     function FindAndClick(selector, page) {
         var _this = this;
@@ -128,58 +129,84 @@ exports.Command = Command;
 function wait(ms) {
     return new Promise(function (res, rej) {
         setTimeout(function () {
-            console.log('hola');
             res();
         }, ms);
     });
 }
 function executeCommand(data, page) {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a, waitFor;
+    var _this = this;
+    return new Promise(function (res, rej) { return __awaiter(_this, void 0, void 0, function () {
+        var _a, error_1, waitFor;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    _b.trys.push([0, 10, , 11]);
                     _a = data.type;
                     switch (_a) {
                         case 'click': return [3 /*break*/, 1];
                         case 'write': return [3 /*break*/, 3];
                         case 'route': return [3 /*break*/, 5];
+                        case 'screenshot': return [3 /*break*/, 7];
                     }
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 9];
                 case 1: return [4 /*yield*/, clickCommand(data, page)];
                 case 2:
                     _b.sent();
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 9];
                 case 3: return [4 /*yield*/, writeCommand(data, page)];
                 case 4:
                     _b.sent();
-                    return [3 /*break*/, 7];
+                    return [3 /*break*/, 9];
                 case 5: return [4 /*yield*/, routeCommand(data, page)];
                 case 6:
                     _b.sent();
-                    _b.label = 7;
-                case 7:
-                    waitFor = data.waitFor ? data.waitFor : 1500;
-                    return [4 /*yield*/, wait(waitFor)];
+                    return [3 /*break*/, 9];
+                case 7: return [4 /*yield*/, screenshot(data, page)];
                 case 8:
                     _b.sent();
+                    return [3 /*break*/, 9];
+                case 9: return [3 /*break*/, 11];
+                case 10:
+                    error_1 = _b.sent();
+                    res({
+                        error: error_1,
+                        command: data
+                    });
+                    return [3 /*break*/, 11];
+                case 11:
+                    waitFor = data.waitFor ? data.waitFor : 1500;
+                    return [4 /*yield*/, wait(waitFor)];
+                case 12:
+                    _b.sent();
+                    res({
+                        error: false
+                    });
                     return [2 /*return*/];
             }
         });
-    });
+    }); });
 }
 exports.executeCommand = executeCommand;
 function clickCommand(data, page) {
     return __awaiter(this, void 0, void 0, function () {
-        var el;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, page.waitFor(data.selector, { timeout: 50000 })];
+        var el, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (!(data.toFind)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, queryElement(data.queryParams, data.selector, page)];
                 case 1:
-                    el = _a.sent();
+                    _a = _b.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, page.waitFor(data.selector)];
+                case 3:
+                    _a = _b.sent();
+                    _b.label = 4;
+                case 4:
+                    el = _a;
                     return [4 /*yield*/, el.click()];
-                case 2:
-                    _a.sent();
+                case 5:
+                    _b.sent();
                     return [2 /*return*/];
             }
         });
@@ -187,15 +214,27 @@ function clickCommand(data, page) {
 }
 function writeCommand(data, page) {
     return __awaiter(this, void 0, void 0, function () {
-        var el;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, page.waitFor(data.selector, { timeout: 50000 })];
+        var el, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0:
+                    if (data.isFake === true) {
+                        data.text = faker[data.faker.object][data.faker["function"]]();
+                    }
+                    if (!(data.toFind)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, queryElement(data.queryParams, data.selector, page)];
                 case 1:
-                    el = _a.sent();
+                    _a = _b.sent();
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, page.waitFor(data.selector, { timeout: 50000 })];
+                case 3:
+                    _a = _b.sent();
+                    _b.label = 4;
+                case 4:
+                    el = _a;
                     return [4 /*yield*/, el.type(data.text)];
-                case 2:
-                    _a.sent();
+                case 5:
+                    _b.sent();
                     return [2 /*return*/];
             }
         });
@@ -205,10 +244,55 @@ function routeCommand(data, page) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, page.goto(data.route)];
+                case 0: return [4 /*yield*/, page.setViewport(data.viewPort ? data.viewPort : { width: 1280, height: 720 })];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, page.goto(data.url, { timeout: 50000 })];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function screenshot(data, page) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, page.screenshot({ path: process.cwd() + '/testResults/' + data.path })];
                 case 1:
                     _a.sent();
                     return [2 /*return*/];
+            }
+        });
+    });
+}
+function queryElement(queryParams, selector, page) {
+    return __awaiter(this, void 0, void 0, function () {
+        var queryValue, propertyName, queryMethod, elms, i, json;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    queryValue = queryParams.queryValue, propertyName = queryParams.propertyName, queryMethod = queryParams.queryMethod;
+                    return [4 /*yield*/, page.$$(selector)];
+                case 1:
+                    elms = _a.sent();
+                    i = 0;
+                    _a.label = 2;
+                case 2:
+                    if (!(i < elms.length)) return [3 /*break*/, 6];
+                    return [4 /*yield*/, elms[i].getProperty(propertyName)];
+                case 3: return [4 /*yield*/, (_a.sent()).jsonValue()];
+                case 4:
+                    json = _a.sent();
+                    if (json.includes(queryValue)) {
+                        return [2 /*return*/, elms[i]];
+                    }
+                    _a.label = 5;
+                case 5:
+                    i++;
+                    return [3 /*break*/, 2];
+                case 6: return [2 /*return*/];
             }
         });
     });

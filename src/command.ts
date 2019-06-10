@@ -93,9 +93,9 @@ export function executeCommand(data, page: puppteer.Page) {
 }
 
 async function clickCommand(data, page: puppteer.Page) {
-            const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
-                await page.waitFor(data.selector as string);
-            await el.click();
+    const el = (data.toFind) ? await queryElement(data.queryParams, data.selector, page) :
+        await page.waitFor(data.selector as string);
+    await el.click();
 }
 async function writeCommand(data, page: puppteer.Page) {
     if (data.isFake === true) {
@@ -106,10 +106,12 @@ async function writeCommand(data, page: puppteer.Page) {
     await el.type(data.text);
 }
 async function routeCommand(data, page: puppteer.Page) {
-    await page.goto(data.url, { timeout: 50000 });
+
+    await page.setViewport(data.viewPort ? data.viewPort : { width: 1280, height: 720 });
+    await page.goto(data.url, { timeout: 50000, });
 }
 async function screenshot(data, page: puppteer.Page) {
-    await page.screenshot({ path: data.path });
+    await page.screenshot({ path: process.cwd() + '/testResults/' + data.path });
 }
 async function queryElement(queryParams, selector, page: puppteer.Page) {
     const { queryValue, propertyName, queryMethod } = queryParams;

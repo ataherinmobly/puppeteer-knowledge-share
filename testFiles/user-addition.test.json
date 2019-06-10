@@ -4,6 +4,10 @@
         "waitFor": "5000"
     },
     {
+        "type": "screenshot",
+        "path": "user-addition.png"
+    },
+    {
         "type": "click",
         "selector": "a.btn.up"
     },
@@ -44,7 +48,6 @@
     },
     {
         "type": "screenshot",
-        "path": "user-addition.png",
-        "extras": {}
+        "path": "user-addition.png"
     }
 ]
