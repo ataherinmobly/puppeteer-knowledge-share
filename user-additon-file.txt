@@ -1,0 +1,25 @@
+start time at: 18:36:16
+ 
+executing command {"type":"route","url":"https://www.tdmascr.com/","waitFor":"5000"}
+ 
+executing command {"type":"click","selector":"a.btn.up"}
+ 
+executing command {"type":"click","selector":"a.user-choose-login-inner-client-button"}
+ 
+executing command {"type":"write","selector":"input[type=email]","text":"a@a.com"}
+ 
+executing command {"type":"write","selector":"input[type=password]","text":"a"}
+ 
+executing command {"type":"click","selector":".user-outer-login-submit"}
+ 
+executing command {"type":"click","selector":"a.action-buttons"}
+ 
+executing command {"type":"click","selector":"a.action-buttons"}
+ 
+executing command {"type":"write","selector":".setting-screen-modal-container input","text":"User From Bot"}
+ 
+executing command {"type":"click","selector":"#modal_account_management_save_button"}
+ 
+executing command {"type":"screenshot","path":"user-addition.png","extras":{}}
+ 
+test useraddition was successful
