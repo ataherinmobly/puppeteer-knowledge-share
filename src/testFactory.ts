@@ -23,7 +23,7 @@ export class TestFactory {
             this.logMessages.push('executing command ' + JSON.stringify(commandsArray[i]));
             const executionResult: any = await executeCommand(commandsArray[i], this.page);
             if (executionResult.error) {
-                this.logMessages.push('failed at command ' + getTime().toString());
+                this.logMessages.push('failed at command ' + getTime().toString(), JSON.stringify(executionResult.error));
                 failed = true;
                 break;
             }
